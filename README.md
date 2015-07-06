@@ -5,13 +5,10 @@ An ES6 implmentation of the tutorial by @kenwheeler: [Create a Shopping Cart Usi
 
 The webpack build process is taken from the [survivejs: webpack and react](https://github.com/survivejs/webpack_react) tutorial, which is awesome.
 
-<br>
-
 **npm start** to open on http://localhost:8080/webpack-dev-server/
 
 **npm run build** to run a normal build
 
-<br>
 
 The following resources were incredibly useful for figuring out how to get React and ES6 to coexist:
 
