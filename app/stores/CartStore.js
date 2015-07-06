@@ -1,7 +1,8 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var FluxCartConstants = require('../constants/FluxCartConstants');
-var _ = require('underscore');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import {EventEmitter} from 'events';
+import FluxCartConstants from '../constants/FluxCartConstants';
+
+// assign = underscore extend
 
 // Define initial data points
 var _products = {}, _cartVisible = false;
@@ -9,7 +10,7 @@ var _products = {}, _cartVisible = false;
 // Add product to cart
 function add(sku, update) {
   update.quantity = sku in _products ? _products[sku].quantity + 1 : 1;
-  _products[sku] = _.extend({}, _products[sku], update)
+  _products[sku] = Object.assign({}, _products[sku], update);
 }
 
 // Set cart visibility
@@ -23,55 +24,60 @@ function removeItem(sku) {
 }
 
 // Extend Cart Store with EventEmitter to add eventing capabilities
-var CartStore = _.extend({}, EventEmitter.prototype, {
+class CartStore extends EventEmitter {
+
+  constructor() {
+    super();
+  }
 
   // Return cart items
-  getCartItems: function() {
+  getCartItems() {
     return _products;
-  },
+  }
 
   // Return # of items in cart
-  getCartCount: function() {
+  getCartCount() {
     return Object.keys(_products).length;
-  },
+  }
 
   // Return cart cost total
-  getCartTotal: function() {
+  getCartTotal() {
     var total = 0;
-    for(product in _products){
+    for(var product in _products){
       if(_products.hasOwnProperty(product)){
         total += _products[product].price * _products[product].quantity;
       }
     }
     return total.toFixed(2);
-  },
+  }
 
   // Return cart visibility state
-  getCartVisible: function() {
+  getCartVisible() {
     return _cartVisible;
-  },
+  }
 
   // Emit Change event
-  emitChange: function() {
+  emitChange() {
     this.emit('change');
-  },
+  }
 
   // Add change listener
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on('change', callback);
-  },
+  }
 
   // Remove change listener
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener('change', callback);
   }
 
-});
+}
+
+let cartStoreInstance = new CartStore();
 
 // Register callback with AppDispatcher
 AppDispatcher.register(function(payload) {
   var action = payload.action;
-  var text;
 
   switch(action.actionType) {
 
@@ -95,10 +101,10 @@ AppDispatcher.register(function(payload) {
   }
 
   // If action was responded to, emit change event
-  CartStore.emitChange();
+  cartStoreInstance.emitChange();
 
   return true;
 
 });
 
-module.exports = CartStore;
+export default cartStoreInstance;

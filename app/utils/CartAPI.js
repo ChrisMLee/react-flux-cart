@@ -1,9 +1,9 @@
-var FluxCartActions = require('../actions/FluxCartActions');
+import FluxCartActions from '../actions/FluxCartActions';
 
-module.exports = {
+export default {
 
   // Load mock product data from localStorage into ProductStore via Action
-  getProductData: function() {
+  getProductData() {
     var data = JSON.parse(localStorage.getItem('product'));
     FluxCartActions.receiveProduct(data);
   }

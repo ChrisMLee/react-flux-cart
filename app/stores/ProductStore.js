@@ -1,7 +1,9 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var FluxCartConstants = require('../constants/FluxCartConstants');
-var _ = require('underscore');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import {EventEmitter} from 'events';
+import FluxCartConstants from '../constants/FluxCartConstants';
+
+// How fluxxor does it
+// https://github.com/nelix/fluxxor-react-chrome-boilerplate/blob/4bad47e298c0fbfc5d4f2438296ff9f5335e7609/app/stores/generic.js
 
 // Define initial data points
 var _product = {}, _selected = null;
@@ -19,39 +21,40 @@ function setSelected(index) {
 
 
 // Extend ProductStore with EventEmitter to add eventing capabilities
-var ProductStore = _.extend({}, EventEmitter.prototype, {
+class ProductStore extends EventEmitter {
 
   // Return Product data
-  getProduct: function() {
+  getProduct() {
     return _product;
-  },
+  }
 
   // Return selected Product
-  getSelected: function(){
+  getSelected(){
     return _selected;
-  },
+  }
 
   // Emit Change event
-  emitChange: function() {
+  emitChange() {
     this.emit('change');
-  },
+  }
 
   // Add change listener
-  addChangeListener: function(callback) {
+  addChangeListener(callback) {
     this.on('change', callback);
-  },
+  }
 
   // Remove change listener
-  removeChangeListener: function(callback) {
+  removeChangeListener(callback) {
     this.removeListener('change', callback);
   }
 
-});
+}
+
+let productStoreInstance = new ProductStore();
 
 // Register callback with AppDispatcher
 AppDispatcher.register(function(payload) {
   var action = payload.action;
-  var text;
 
   switch(action.actionType) {
 
@@ -70,10 +73,11 @@ AppDispatcher.register(function(payload) {
   }
 
   // If action was responded to, emit change event
-  ProductStore.emitChange();
+  productStoreInstance.emitChange();
 
   return true;
 
 });
 
-module.exports = ProductStore;
+export default productStoreInstance;
+

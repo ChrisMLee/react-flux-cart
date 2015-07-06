@@ -1,50 +1,50 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var FluxCartConstants = require('../constants/FluxCartConstants');
+import AppDispatcher from '../dispatcher/AppDispatcher';
+import FluxCartConstants from '../constants/FluxCartConstants';
 
-// Define action methods
+// Define actions object
 var FluxCartActions = {
 
   // Receive inital product data
-  receiveProduct: function(data) {
+  receiveProduct(data) {
     AppDispatcher.handleAction({
       actionType: FluxCartConstants.RECEIVE_DATA,
       data: data
-    })
+    });
   },
 
   // Set currently selected product variation
-  selectProduct: function(index) {
+  selectProduct(index) {
     AppDispatcher.handleAction({
       actionType: FluxCartConstants.SELECT_PRODUCT,
       data: index
-    })
+    });
   },
 
   // Add item to cart
-  addToCart: function(sku, update) {
+  addToCart(sku, update) {
     AppDispatcher.handleAction({
       actionType: FluxCartConstants.CART_ADD,
       sku: sku,
       update: update
-    })
+    });
   },
 
   // Remove item from cart
-  removeFromCart: function(sku) {
+  removeFromCart(sku) {
     AppDispatcher.handleAction({
       actionType: FluxCartConstants.CART_REMOVE,
       sku: sku
-    })
+    });
   },
 
   // Update cart visibility status
-  updateCartVisible: function(cartVisible) {
+  updateCartVisible(cartVisible) {
     AppDispatcher.handleAction({
       actionType: FluxCartConstants.CART_VISIBLE,
       cartVisible: cartVisible
-    })
+    });
   }
 
 };
 
-module.exports = FluxCartActions;
+export default FluxCartActions;
