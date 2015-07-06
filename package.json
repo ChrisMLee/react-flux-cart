@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "Pricing component with flux, ported to ES6",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChrisMLee/react-flux-cart"
+  },
   "scripts": {
     "build": "TARGET=build webpack",
     "start": "TARGET=dev node lib/dev_server.js",
